@@ -1,36 +1,47 @@
 pipeline {
-    agent any
+    agent any  // Use any available agent
 
     tools {
-        maven 'Maven'
+        maven 'Maven'  // Ensure this matches the name configured in Jenkins
     }
-
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/sgayatrijadhav-hub/maven.git'
+            }
+        }
 
         stage('Build') {
             steps {
-                sh 'mvn clean compile'
+                sh 'mvn clean package'  // Run Maven build
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test'  // Run unit tests
             }
         }
 
-        stage('Package') {
+        
+        
+       
+        stage('Run Application') {
             steps {
-                sh 'mvn package'
+                // Start the JAR application
+                sh 'java -jar target/MyMavenApp2-1.0-SNAPSHOT.jar'
             }
         }
+
+        
     }
-    post{
-        success{
-            echo 'Build successful'
+
+    post {
+        success {
+            echo 'Build and deployment successful!'
         }
-        failure{
-            dcho 'Build failed'
+        failure {
+            echo 'Build failed!'
         }
     }
 }
