@@ -3,7 +3,6 @@ pipeline {
 
     tools {
         maven 'Maven'
-        jdk 'JDK11'
     }
 
     stages {
@@ -24,6 +23,14 @@ pipeline {
             steps {
                 sh 'mvn package'
             }
+        }
+    }
+    post{
+        success{
+            echo 'Build successful'
+        }
+        failure{
+            dcho 'Build failed'
         }
     }
 }
